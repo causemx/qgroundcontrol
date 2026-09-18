@@ -330,7 +330,7 @@ public:
     virtual QString offlineEditingParamFile(Vehicle* /*vehicle*/) const { return QString(); }
 
     /// Return the resource file which contains the vehicle icon used in the flight view when the view is dark (Satellite for instance)
-    virtual QString vehicleImageOpaque(const Vehicle* /*vehicle*/) const { return QStringLiteral("/qmlimages/vehicleArrowOpaque.svg"); }
+    virtual QString vehicleImageOpaque(const Vehicle* /*vehicle*/) const { return QStringLiteral("/qmlimages/quadCopter.svg"); }
 
     /// Return the resource file which contains the vehicle icon used in the flight view when the view is light (Map for instance)
     virtual QString vehicleImageOutline(const Vehicle* /*vehicle*/) const { return QStringLiteral("/qmlimages/vehicleArrowOutline.svg"); }

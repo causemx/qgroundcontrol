@@ -76,11 +76,13 @@ void GPSProviderTest::_transportLifetimeStaysOnWorker()
     TransportTrace trace;
     auto lifetime = std::make_shared<int>(0);
     trace.factoryLifetime = lifetime;
+    GPSProvider* providerPtr = nullptr;
     GPSProvider provider(
         [&, lifetime = std::move(lifetime)](const std::atomic_bool&) {
-            return std::make_unique<TestTransport>(trace, [&provider]() { provider.stop(); }, openResult, cancelInOpen);
+            return std::make_unique<TestTransport>(trace, [providerPtr]() { providerPtr->stop(); }, openResult, cancelInOpen);
         },
         GPSReceiverType::ublox, GPSReceiverConfig{});
+    providerPtr = &provider;
     QSignalSpy errors(&provider, &GPSProvider::connectionError);
     provider.start();
     QVERIFY(provider.wait(TestTimeout::shortMs()));
@@ -201,12 +203,14 @@ void GPSProviderTest::_configuredReceiverReportsReadyThenLoss()
 void GPSProviderTest::_cancelledFactoryDoesNotOpenTransport()
 {
     TransportTrace trace;
+    GPSProvider* providerPtr = nullptr;
     GPSProvider provider(
         [&](const std::atomic_bool&) {
-            provider.stop();
+            providerPtr->stop();
             return std::make_unique<TestTransport>(trace, []() {}, true, false);
         },
         GPSReceiverType::ublox, GPSReceiverConfig{});
+    providerPtr = &provider;
     QSignalSpy errors(&provider, &GPSProvider::connectionError);
     provider.start();
     QVERIFY(provider.wait(TestTimeout::shortMs()));

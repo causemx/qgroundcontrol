@@ -88,7 +88,6 @@ qt_add_resources(${CMAKE_PROJECT_NAME} flightmap_qmlimages
         "${CMAKE_SOURCE_DIR}/src/FlightMap/Images/PiP.svg"
         "${CMAKE_SOURCE_DIR}/src/FlightMap/Images/pipHide.svg"
         "${CMAKE_SOURCE_DIR}/src/FlightMap/Images/pipResize.svg"
-        "${CMAKE_SOURCE_DIR}/src/FlightMap/Images/quadCopter.svg"
         "${CMAKE_SOURCE_DIR}/src/FlightMap/Images/rollDialWhite.svg"
         "${CMAKE_SOURCE_DIR}/src/FlightMap/Images/rollPointerWhite.svg"
         "${CMAKE_SOURCE_DIR}/src/FlightMap/Images/scale.png"
@@ -98,6 +97,8 @@ qt_add_resources(${CMAKE_PROJECT_NAME} flightmap_qmlimages
         "${CMAKE_SOURCE_DIR}/src/FlightMap/Images/sub.png"
         "${CMAKE_SOURCE_DIR}/src/FlightMap/Images/vehicleArrowOpaque.svg"
         "${CMAKE_SOURCE_DIR}/src/FlightMap/Images/vehicleArrowOutline.svg"
+        "${CMAKE_SOURCE_DIR}/src/FlightMap/Images/vehicleFollower.svg"
+        "${CMAKE_SOURCE_DIR}/src/FlightMap/Images/vehicleLeader.svg"
         "${CMAKE_SOURCE_DIR}/src/FlightMap/Images/ZoomMinus.svg"
         "${CMAKE_SOURCE_DIR}/src/FlightMap/Images/ZoomPlus.svg"
 )

@@ -39,6 +39,17 @@ FirmwarePlugin::~FirmwarePlugin()
     qCDebug(FirmwarePluginLog) << this;
 }
 
+QString FirmwarePlugin::vehicleImageOpaque(const Vehicle *vehicle) const
+{
+    static constexpr int kLeaderVehicleId = 1;
+
+    if (vehicle && vehicle->id() != kLeaderVehicleId) {
+        return QStringLiteral("/qmlimages/vehicleFollower.svg");
+    }
+
+    return QStringLiteral("/qmlimages/vehicleLeader.svg");
+}
+
 AutoPilotPlugin *FirmwarePlugin::autopilotPlugin(Vehicle *vehicle) const
 {
     return new GenericAutoPilotPlugin(vehicle, vehicle);

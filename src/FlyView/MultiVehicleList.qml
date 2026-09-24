@@ -89,6 +89,21 @@ Item {
         QGroundControl.multiVehicleManager.deselectAllVehicles()
     }
 
+    function clearTrails() {
+        if (selectedVehicles.count === 0) {
+            if (_activeVehicle && _activeVehicle.trajectoryPoints) {
+                _activeVehicle.trajectoryPoints.clear()
+            }
+            return
+        }
+        for (var i = 0; i < selectedVehicles.count; i++) {
+            var vehicle = selectedVehicles.get(i)
+            if (vehicle && vehicle.trajectoryPoints) {
+                vehicle.trajectoryPoints.clear()
+            }
+        }
+    }
+
     function vehicleSelected(vehicleId) {
         for (var i = 0; i < selectedVehicles.count; i++ ) {
             var currentId = selectedVehicles.get(i).id

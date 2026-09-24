@@ -184,6 +184,12 @@ Rectangle {
                                 leftPadding:           0
                                 rightPadding:          0
                             }
+
+                            QGCButton {
+                                text:                  qsTr("Clear Trails")
+                                enabled:               QGroundControl.multiVehicleManager.activeVehicle || (multiVehicleList.selectedVehicles && multiVehicleList.selectedVehicles.count > 0)
+                                onClicked:             multiVehicleList.clearTrails()
+                            }
                         }
                     }
                 } // Page 1

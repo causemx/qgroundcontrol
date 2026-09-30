@@ -7,6 +7,8 @@ target_sources(${CMAKE_PROJECT_NAME}
     PRIVATE
         Autotune.cpp
         Autotune.h
+        FlightPlaybackRecorder.cc
+        FlightPlaybackRecorder.h
         FTPController.cc
         FTPController.h
         FTPManager.cc

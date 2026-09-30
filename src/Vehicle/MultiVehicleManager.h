@@ -3,6 +3,7 @@
 #include <QtCore/QObject>
 #include <QtQmlIntegration/QtQmlIntegration>
 
+class FlightPlaybackRecorder;
 class LinkInterface;
 class Vehicle;
 class QmlObjectListModel;
@@ -16,12 +17,14 @@ class MultiVehicleManager : public QObject
     Q_MOC_INCLUDE("QmlObjectListModel.h")
     Q_MOC_INCLUDE("LinkInterface.h")
     Q_MOC_INCLUDE("Vehicle.h")
+    Q_MOC_INCLUDE("FlightPlaybackRecorder.h")
     Q_PROPERTY(bool                 activeVehicleAvailable          READ activeVehicleAvailable                                             NOTIFY activeVehicleAvailableChanged)
     Q_PROPERTY(bool                 parameterReadyVehicleAvailable  READ parameterReadyVehicleAvailable                                     NOTIFY parameterReadyVehicleAvailableChanged)
     Q_PROPERTY(Vehicle              *activeVehicle                  READ activeVehicle                      WRITE setActiveVehicle          NOTIFY activeVehicleChanged)
     Q_PROPERTY(QmlObjectListModel   *vehicles                       READ vehicles                                                           CONSTANT)
     Q_PROPERTY(QmlObjectListModel   *selectedVehicles               READ selectedVehicles                                                   CONSTANT)
     Q_PROPERTY(Vehicle              *offlineEditingVehicle          READ offlineEditingVehicle                                              CONSTANT)
+    Q_PROPERTY(FlightPlaybackRecorder *flightPlaybackRecorder       READ flightPlaybackRecorder                                             CONSTANT)
 
 public:
     explicit MultiVehicleManager(QObject *parent = nullptr);
@@ -37,6 +40,7 @@ public:
     QmlObjectListModel *vehicles() const { return _vehicles; }
     QmlObjectListModel *selectedVehicles() const { return _selectedVehicles; }
     Vehicle *offlineEditingVehicle() const { return _offlineEditingVehicle; }
+    FlightPlaybackRecorder *flightPlaybackRecorder() const { return _flightPlaybackRecorder; }
     Vehicle *activeVehicle() const { return _activeVehicle; }
     void setActiveVehicle(Vehicle *vehicle);
     bool activeVehicleAvailable() const { return _activeVehicleAvailable; }
@@ -68,6 +72,7 @@ private:
     QmlObjectListModel *_vehicles = nullptr;
     QmlObjectListModel *_selectedVehicles = nullptr;
     Vehicle *_offlineEditingVehicle = nullptr;      ///< Disconnected vechicle used for offline editing
+    FlightPlaybackRecorder *_flightPlaybackRecorder = nullptr;
     bool _activeVehicleAvailable = false;           ///< true: An active vehicle is available
     bool _parameterReadyVehicleAvailable = false;   ///< true: An active vehicle with ready parameters is available
     Vehicle *_activeVehicle = nullptr;              ///< Currently active vehicle from a ui perspective

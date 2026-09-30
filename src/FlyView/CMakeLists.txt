@@ -87,6 +87,9 @@ qt_add_resources(FlyViewModule flyview_resources
         "${CMAKE_SOURCE_DIR}/resources/land.svg"
         "${CMAKE_SOURCE_DIR}/resources/NoVideoBackground.jpg"
         "${CMAKE_SOURCE_DIR}/resources/pause-mission.svg"
+        "${CMAKE_SOURCE_DIR}/resources/PlaybackPlay.svg"
+        "${CMAKE_SOURCE_DIR}/resources/PlaybackRecord.svg"
+        "${CMAKE_SOURCE_DIR}/resources/PlaybackStop.svg"
 )
 
 qt_add_resources(FlyViewModule flyview_qmlimages

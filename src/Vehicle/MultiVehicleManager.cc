@@ -1,4 +1,5 @@
 #include "MultiVehicleManager.h"
+#include "FlightPlaybackRecorder.h"
 #include "MAVLinkProtocol.h"
 #include "AppMessages.h"
 #include "ParameterManager.h"
@@ -31,6 +32,7 @@ MultiVehicleManager::MultiVehicleManager(QObject *parent)
     , _gcsHeartbeatTimer(new QTimer(this))
     , _vehicles(new QmlObjectListModel(this))
     , _selectedVehicles(new QmlObjectListModel(this))
+    , _flightPlaybackRecorder(new FlightPlaybackRecorder(_vehicles, this))
 {
     qCDebug(MultiVehicleManagerLog) << this;
 }

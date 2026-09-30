@@ -9,6 +9,8 @@ target_sources(${CMAKE_PROJECT_NAME}
         APMAirframeComponentControllerTest.h
         APMStartMissionTest.cc
         APMStartMissionTest.h
+        FlightPlaybackRecorderTest.cc
+        FlightPlaybackRecorderTest.h
         FTPManagerTest.cc
         FTPManagerTest.h
         FTPControllerTest.cc
@@ -58,6 +60,7 @@ add_subdirectory(ComponentInformation)
 
 add_qgc_test(APMAirframeComponentControllerTest LABELS Integration Vehicle)
 add_qgc_test(APMStartMissionTest LABELS Integration Vehicle)
+add_qgc_test(FlightPlaybackRecorderTest LABELS Unit Vehicle)
 add_qgc_test(FTPControllerTest LABELS Integration Vehicle RESOURCE_LOCK TempFiles)
 add_qgc_test(FTPManagerTest LABELS Integration Vehicle)
 if(NOT QGC_NO_SERIAL_LINK)

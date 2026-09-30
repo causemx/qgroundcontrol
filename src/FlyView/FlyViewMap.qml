@@ -231,6 +231,35 @@ FlightMap {
             z:              QGroundControl.zOrderVehicles
         }
     }
+
+    // Add recorded flight playback ghost vehicles to the map
+    MapItemView {
+        property var _recorder: QGroundControl.multiVehicleManager.flightPlaybackRecorder
+
+        model: _recorder.playbackActive ? _recorder.samplesAt(_recorder.playbackPositionMs) : []
+        delegate: MapQuickItem {
+            id:             ghostItem
+            coordinate:     modelData.coordinate
+            anchorPoint.x:  ghostIcon.width  / 2
+            anchorPoint.y:  ghostIcon.height / 2
+            opacity:        0.5
+            z:              QGroundControl.zOrderVehicles - 1
+            visible:        !pipMode
+
+            property var _vehicle: QGroundControl.multiVehicleManager.getVehicleById(modelData.vehicleId)
+
+            sourceItem: Image {
+                id:                 ghostIcon
+                source:             ghostItem._vehicle ? ghostItem._vehicle.vehicleImageOpaque : "/qmlimages/vehicleArrowOutline.svg"
+                mipmap:             true
+                width:              ScreenTools.defaultFontPixelHeight * 3
+                sourceSize.width:   width
+                fillMode:           Image.PreserveAspectFit
+                rotation:           isNaN(modelData.heading) ? 0 : modelData.heading
+            }
+        }
+    }
+
     // Add distance sensor view
     MapItemView{
         model: QGroundControl.multiVehicleManager.vehicles

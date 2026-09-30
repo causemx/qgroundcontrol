@@ -90,14 +90,9 @@ Item {
     }
 
     function clearTrails() {
-        if (selectedVehicles.count === 0) {
-            if (_activeVehicle && _activeVehicle.trajectoryPoints) {
-                _activeVehicle.trajectoryPoints.clear()
-            }
-            return
-        }
-        for (var i = 0; i < selectedVehicles.count; i++) {
-            var vehicle = selectedVehicles.get(i)
+        var vehicles = QGroundControl.multiVehicleManager.vehicles
+        for (var i = 0; i < vehicles.count; i++) {
+            var vehicle = vehicles.get(i)
             if (vehicle && vehicle.trajectoryPoints) {
                 vehicle.trajectoryPoints.clear()
             }

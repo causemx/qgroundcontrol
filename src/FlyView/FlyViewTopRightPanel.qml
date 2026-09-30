@@ -93,8 +93,8 @@ Rectangle {
                 id:                swipePages
                 anchors.fill:      parent
                 spacing:           ScreenTools.defaultFontPixelHeight
-                implicitHeight:    Math.max(buttonsPage.implicitHeight, photoVideoPage.implicitHeight)
-                implicitWidth:     Math.max(buttonsPage.implicitWidth, photoVideoPage.implicitWidth)
+                implicitHeight:    Math.max(buttonsPage.implicitHeight, trailsPlaybackPage.implicitHeight, photoVideoPage.implicitHeight)
+                implicitWidth:     Math.max(buttonsPage.implicitWidth, trailsPlaybackPage.implicitWidth, photoVideoPage.implicitWidth)
 
                 MvPanelPage {
                     id:                buttonsPage
@@ -187,12 +187,105 @@ Rectangle {
 
                             QGCButton {
                                 text:                  qsTr("Clear Trails")
-                                enabled:               QGroundControl.multiVehicleManager.activeVehicle || (multiVehicleList.selectedVehicles && multiVehicleList.selectedVehicles.count > 0)
+                                enabled:               QGroundControl.multiVehicleManager.vehicles.count > 0
                                 onClicked:             multiVehicleList.clearTrails()
                             }
                         }
                     }
                 } // Page 1
+
+                MvPanelPage {
+                    id:                 trailsPlaybackPage
+                    implicitHeight:     playbackColumnLayout.implicitHeight + ScreenTools.defaultFontPixelHeight * 2
+                    implicitWidth:      playbackColumnLayout.implicitWidth + ScreenTools.defaultFontPixelHeight * 2
+
+                    property var            _recorder:          QGroundControl.multiVehicleManager.flightPlaybackRecorder
+                    readonly property int   _stepMs:            1000
+                    readonly property int   _tickIntervalMs:    5000
+
+                    function _formatTime(ms) {
+                        var totalSeconds = Math.floor(ms / 1000)
+                        var seconds = totalSeconds % 60
+                        return Math.floor(totalSeconds / 60) + ":" + (seconds < 10 ? "0" : "") + seconds
+                    }
+
+                    ColumnLayout {
+                        id:                     playbackColumnLayout
+                        anchors.right:          parent.right
+                        anchors.left:           parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        spacing:                ScreenTools.defaultFontPixelHeight / 2
+
+                        QGCLabel {
+                            text:              qsTr("Flight Playback")
+                            Layout.alignment:  Qt.AlignHCenter
+                        }
+
+                        RowLayout {
+                            Layout.alignment:  Qt.AlignHCenter
+
+                            QGCButton {
+                                text:       qsTr("Record")
+                                iconSource: "/res/PlaybackRecord.svg"
+                                enabled:    !trailsPlaybackPage._recorder.recording && !trailsPlaybackPage._recorder.playbackActive
+                                onClicked:  trailsPlaybackPage._recorder.startRecording()
+                            }
+
+                            QGCButton {
+                                text:       qsTr("Stop")
+                                iconSource: "/res/PlaybackStop.svg"
+                                enabled:    trailsPlaybackPage._recorder.recording
+                                onClicked:  trailsPlaybackPage._recorder.stopRecording()
+                            }
+
+                            QGCButton {
+                                text:       qsTr("Play")
+                                iconSource: "/res/PlaybackPlay.svg"
+                                checked:    trailsPlaybackPage._recorder.playbackActive
+                                enabled:    !trailsPlaybackPage._recorder.recording && trailsPlaybackPage._recorder.hasRecording
+                                onClicked:  trailsPlaybackPage._recorder.playbackActive = !trailsPlaybackPage._recorder.playbackActive
+                            }
+                        }
+
+                        QGCSlider {
+                            id:                 playbackSlider
+                            Layout.fillWidth:   true
+                            from:               0
+                            to:                 trailsPlaybackPage._recorder.durationMs
+                            stepSize:           trailsPlaybackPage._stepMs
+                            snapMode:           Slider.SnapAlways
+                            value:              trailsPlaybackPage._recorder.playbackPositionMs
+                            enabled:            trailsPlaybackPage._recorder.playbackActive
+                            onMoved:            trailsPlaybackPage._recorder.playbackPositionMs = value
+                        }
+
+                        Item {
+                            id:                     tickRow
+                            Layout.fillWidth:       true
+                            Layout.preferredHeight: ScreenTools.defaultFontPixelHeight / 2
+
+                            Repeater {
+                                model: playbackSlider.to > 0 ? Math.floor(playbackSlider.to / trailsPlaybackPage._tickIntervalMs) + 1 : 0
+
+                                Rectangle {
+                                    width:  1
+                                    height: tickRow.height
+                                    color:  qgcPal.text
+                                    x:      playbackSlider.leftPadding + playbackSlider.handle.width / 2
+                                            + (index * trailsPlaybackPage._tickIntervalMs / playbackSlider.to)
+                                              * (playbackSlider.availableWidth - playbackSlider.handle.width)
+                                            - width / 2
+                                }
+                            }
+                        }
+
+                        QGCLabel {
+                            text:              trailsPlaybackPage._formatTime(trailsPlaybackPage._recorder.playbackPositionMs)
+                                               + " / " + trailsPlaybackPage._formatTime(trailsPlaybackPage._recorder.durationMs)
+                            Layout.alignment:  Qt.AlignHCenter
+                        }
+                    }
+                } // Page 2
 
                 MvPanelPage {
 
@@ -218,7 +311,7 @@ Rectangle {
                             }
                         }
                     }
-                } // Page 2
+                } // Page 3
             } // QGCSwipeView
 
             QGCPageIndicator {
